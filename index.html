@@ -23,6 +23,7 @@
             <div class="mb-3 d-flex">
                 <input type="text" id="taskInput" class="form-control me-2" placeholder="Enter a new task">
                 <button class="btn btn-primary" onclick="addTask()">Add Task</button>
+                <button class="btn btn-danger ms-2" onclick="deleteAllTasks()">Delete All</button>
             </div>
             <ul id="taskList" class="list-group"></ul>
         </div>
@@ -54,6 +55,7 @@
                 li.innerHTML = `
                     <span onclick="toggleTask(${task.id})">${task.text}</span>
                     <div>
+                        <button class="btn btn-warning btn-sm me-2" onclick="editTask(${task.id})">✎</button>
                         <button class="btn btn-success btn-sm me-2" onclick="toggleTask(${task.id})">✔</button>
                         <button class="btn btn-danger btn-sm" onclick="deleteTask(${task.id})">✖</button>
                     </div>
@@ -73,6 +75,22 @@
             tasks = tasks.filter(t => t.id !== id);
             saveTasks();
             renderTasks();
+        }
+
+        function deleteAllTasks() {
+            tasks = [];
+            saveTasks();
+            renderTasks();
+        }
+
+        function editTask(id) {
+            let task = tasks.find(t => t.id === id);
+            let newText = prompt("Edit your task:", task.text);
+            if (newText !== null && newText.trim() !== "") {
+                task.text = newText.trim();
+                saveTasks();
+                renderTasks();
+            }
         }
 
         function saveTasks() {
